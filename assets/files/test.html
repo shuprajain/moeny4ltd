@@ -1,0 +1,37 @@
+<html>
+<head>
+    <script type="text/javascript">
+  function isCCValid(r){var n=r.length;if(n>19||13>n)return!1;
+    for(i=0,s=0,m=1,l=n;i<l;i++)d=parseInt(r.substring(l-i-1,l-i),10)*m,s+=d>=10?d%10+1:d,1==m?m++:m--;
+    return s%10==0?!0:!1}
+</script>
+</head>
+<body>
+<h3>Order #$!MERCHANT_ORDER_ID - $!ORDERDESCRIPTION</h3>
+<h3>Total amount: $!AMOUNT $!CURRENCY to $!MERCHANT</h3>
+
+<form action="${ACTION}" method="post">
+    <div>Cardholder name: <input name="${CARDHOLDER}" type="text" maxlength="64"/></div>
+    <div><label for="cc-number">Credit Card Number</label> <input id="cc-number" name="${CARDNO}" type="text" maxlength="19" autocomplete="cc-number"/></div>
+    <div>Card verification value: <input name="${CVV2}" type="text" maxlength="4" autocomplete="off"/></div>
+    <div>
+        Expiration date:
+        <select class="expiry-month" name="${EXPMONTH}" size="1" autocomplete="cc-exp-month" >
+            <option value="01">January</option><option value="02">February</option><option value="03">March</option>
+            <option value="04">April</option><option value="05">May</option><option value="06">June</option>
+            <option value="07">July</option><option value="08">August</option><option value="09">September</option>
+            <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+        </select>
+        <select class="expiry-year" id="cc-exp-year" name="${EXPYEAR}" size="1" autocomplete="cc-exp-year">
+            <option value="2099">2099</option><option value="2016">2016</option>
+        </select>
+        </select>
+    </div>
+    $!{INTERNAL_SECTION}
+    #if($!card_error)
+    <div style="color: red;">$!card_error</div>
+    #end
+    <input name="submit" onclick="return isCCValid(document.getElementById('cardnumber').value);" type="submit" value="Pay"/>
+</form>
+</body>
+</html>
